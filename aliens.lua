@@ -22,3 +22,15 @@ function makeAliens()
     end
     return data
 end
+
+function getFurthestRightAlien(aliens)
+    furthestRight = 0
+    for i = 1,(#aliens) do 
+        for j = 1,(#aliens[i]) do
+            if j > furthestRight and aliens[i][j].alive then
+                furthestRight = j
+            end
+        end
+    end
+    return furthestRight
+end

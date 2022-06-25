@@ -7,16 +7,27 @@ function _init()
     alienRows = 5
     alienRowBuffer = 4
     alienColBuffer = 2
+    alienMovementX = 1
     alienMovementToggle = false
     frameCount = 1
     aliens = makeAliens()
+    furthestAlienRight = getFurthestRightAlien(aliens)
+    alienRowEdgeX = getAlienEdgeRowX()
 end
 
 function _update()
+    furthestAlienRight = getFurthestRightAlien(aliens)
+    alienRowEdgeX = getAlienEdgeRowX()
     if frameCount == 30 then
-        alienRowStart += 1
         toggle = not toggle
         sfx(0)
+        if alienRowEdgeX > 124 then
+            alienColStart += 1
+            alienMovementX = -1
+            alienRowStart -= 1
+        else
+            alienRowStart += alienMovementX
+        end
     end
     frameCount += 1
     frameCount = frameCount % 31
@@ -24,47 +35,25 @@ end
 
 function _draw()
     cls()
-    -- alienType = 1
-    -- for i = 0,(alienRows - 1) do 
-    --     for j = 0,(alienCols - 1) do
-    --         -- drawAlien(alienType,alienRowStart + (j*spriteWidth),(i*spriteHeight)+(i*alienRowBuffer))        
-    --         drawAlienSmall(
-    --             alienType,
-    --             alienRowStart + (j*spriteWidth)+(j*alienColBuffer),
-    --             alienColStart + (i*spriteHeight)+(i*alienRowBuffer)
-    --         )        
-    --     end
-    --     if i == 0 then alienType = 2 end
-    --     if i == 2 then alienType = 3 end
-    -- end  
     for i = 0,(alienRows - 1) do 
         for j = 0,(alienCols - 1) do
-            -- drawAlien(alienType,alienRowStart + (j*spriteWidth),(i*spriteHeight)+(i*alienRowBuffer))        
-            drawAlienSmall(
+            drawAlien(
                 aliens[i+1][j+1].type,
                 alienRowStart + (j*spriteWidth)+(j*alienColBuffer),
                 alienColStart + (i*spriteHeight)+(i*alienRowBuffer)
             )        
         end
-        -- if i == 0 then alienType = 2 end
-        -- if i == 2 then alienType = 3 end
     end 
+
+    line(
+        alienRowEdgeX, 0,
+        alienRowEdgeX, 128,
+        11
+    )
+    print("furthest alien right = " .. furthestAlienRight,5,100,7)
 end
 
 function drawAlien(type,x,y)
-    if type == 1 then
-        sprX = 9
-    elseif type == 2 then
-        sprX = 42
-    elseif type == 3 then
-        sprX = 73
-    else
-        sprX = 104
-    end
-    sspr(sprX,sprY,spriteWidth,spriteHeight,x,y)
-end
-
-function drawAlienSmall(type,x,y)
     if type == 1 then
         sprN = 32
     elseif type == 2 then
@@ -76,4 +65,8 @@ function drawAlienSmall(type,x,y)
     end
     if toggle then sprN += 1 end
     spr(sprN,x,y)
+end
+
+function getAlienEdgeRowX()
+    return alienRowStart + (furthestAlienRight*spriteWidth) + (#aliens[1] - 1)*alienColBuffer
 end
