@@ -9,6 +9,12 @@ function _init()
     alienColBuffer = 2
     alienMovementX = 1
     alienMovementToggle = false
+    playerSprite = 16
+    playerX = 8
+    playerY = 120
+    playerWidth = 14
+    screenBoundLeft = 8
+    screenBoundRight = 120
     frameCount = 1
     aliens = makeAliens()
     furthestAlienRight = getFurthestRightAlien(aliens)
@@ -25,10 +31,10 @@ function _update()
     if frameCount == 30 then
         toggle = not toggle
         sfx(0)
-        if alienRowRightEdgeX > 120 then
+        if alienRowRightEdgeX >= 120 then
             alienColStart += 1
             alienMovementX = -1
-        elseif alienRowLeftEdgeX < 8 then
+        elseif alienRowLeftEdgeX <= 8 then
             alienColStart += 1
             alienMovementX = 1
         end
@@ -36,6 +42,7 @@ function _update()
     end
     frameCount += 1
     frameCount = frameCount % 31
+    input()
 end
 
 function _draw()
@@ -48,7 +55,8 @@ function _draw()
                 alienColStart + (i*spriteHeight)+(i*alienRowBuffer)
             )        
         end
-    end 
+    end
+    drawPlayer(playerX, playerY)
 
     if debug then
         line(
@@ -63,6 +71,16 @@ function _draw()
         )
         print("furthest alien right = " .. furthestAlienRight,5,100,7)
         print("furthest alien left = " .. furthestAlienLeft,5,108,7)
+        line(
+            screenBoundLeft, 0,
+            screenBoundLeft, 128,
+            8
+        )
+        line(
+            screenBoundRight, 0,
+            screenBoundRight, 128,
+            8
+        )
     end
 end
 
@@ -80,10 +98,28 @@ function drawAlien(type,x,y)
     spr(sprN,x,y)
 end
 
+function drawPlayer(x,y)
+    spr(playerSprite,x,y)
+    spr(playerSprite+1,x+8,y)
+end
+
 function getAlienRightEdgeRowX()
     return alienRowStart + (furthestAlienRight*spriteWidth) + (#aliens[1] - 1)*alienColBuffer
 end
 
 function getAlienLeftEdgeRowX()
     return alienRowStart + ((furthestAlienLeft-1)*spriteWidth) 
+end
+
+function input()
+    if (btn(0)) then
+        if playerX > screenBoundLeft then
+            playerX -= 1
+        end
+    end
+    if (btn(1)) then
+        if playerX + playerWidth < screenBoundRight then
+            playerX += 1
+        end
+    end
 end
