@@ -28,9 +28,28 @@ function getFurthestRightAlien(aliens)
     for i = 1,(#aliens) do 
         for j = 1,(#aliens[i]) do
             if j > furthestRight and aliens[i][j].alive then
+                -- We can bail early if there's an alien in the last row
+                if j == alienCols then
+                    return j
+                end
                 furthestRight = j
             end
         end
     end
     return furthestRight
+end
+
+function getFurthestLeftAlien(aliens)
+    furthestLeft = alienCols
+    for i = 1,(#aliens) do 
+        for j = 1,(#aliens[i]) do
+            if j < furthestLeft and aliens[i][j].alive then
+                if j == 1 then
+                    return j
+                end
+                furthestLeft = j
+            end
+        end
+    end
+    return furthestLeft
 end

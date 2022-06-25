@@ -12,22 +12,27 @@ function _init()
     frameCount = 1
     aliens = makeAliens()
     furthestAlienRight = getFurthestRightAlien(aliens)
-    alienRowEdgeX = getAlienEdgeRowX()
+    furthestAlienLeft = getFurthestLeftAlien(aliens)
+    alienRowRightEdgeX = getAlienRightEdgeRowX()
+    alienRowLeftEdgeX = getAlienLeftEdgeRowX()
+    debug = false
 end
 
 function _update()
     furthestAlienRight = getFurthestRightAlien(aliens)
-    alienRowEdgeX = getAlienEdgeRowX()
+    alienRowRightEdgeX = getAlienRightEdgeRowX()
+    alienRowLeftEdgeX = getAlienLeftEdgeRowX()
     if frameCount == 30 then
         toggle = not toggle
         sfx(0)
-        if alienRowEdgeX > 124 then
+        if alienRowRightEdgeX > 120 then
             alienColStart += 1
             alienMovementX = -1
-            alienRowStart -= 1
-        else
-            alienRowStart += alienMovementX
+        elseif alienRowLeftEdgeX < 8 then
+            alienColStart += 1
+            alienMovementX = 1
         end
+        alienRowStart += alienMovementX
     end
     frameCount += 1
     frameCount = frameCount % 31
@@ -45,12 +50,20 @@ function _draw()
         end
     end 
 
-    line(
-        alienRowEdgeX, 0,
-        alienRowEdgeX, 128,
-        11
-    )
-    print("furthest alien right = " .. furthestAlienRight,5,100,7)
+    if debug then
+        line(
+            alienRowRightEdgeX, 0,
+            alienRowRightEdgeX, 128,
+            11
+        )
+        line(
+            alienRowLeftEdgeX, 0,
+            alienRowLeftEdgeX, 128,
+            11
+        )
+        print("furthest alien right = " .. furthestAlienRight,5,100,7)
+        print("furthest alien left = " .. furthestAlienLeft,5,108,7)
+    end
 end
 
 function drawAlien(type,x,y)
@@ -67,6 +80,10 @@ function drawAlien(type,x,y)
     spr(sprN,x,y)
 end
 
-function getAlienEdgeRowX()
+function getAlienRightEdgeRowX()
     return alienRowStart + (furthestAlienRight*spriteWidth) + (#aliens[1] - 1)*alienColBuffer
+end
+
+function getAlienLeftEdgeRowX()
+    return alienRowStart + ((furthestAlienLeft-1)*spriteWidth) 
 end
