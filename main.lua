@@ -22,8 +22,6 @@ function _init()
     alienRowRightEdgeX = getAlienRightEdgeRowX()
     alienRowLeftEdgeX = getAlienLeftEdgeRowX()
     debug = false
-    lasers = {}
-    laserSprite = 49
 end
 
 function _update()
@@ -112,24 +110,6 @@ end
 
 function getAlienLeftEdgeRowX()
     return alienRowStart + ((furthestAlienLeft-1)*spriteWidth) 
-end
-
-function drawLasers()
-    foreach(
-        lasers,
-        function(laser) 
-            spr(laserSprite,laser.x,laser.y)
-        end
-    )
-end
-
-function updateLasers()
-    foreach(
-        lasers,
-        function(laser) 
-            laser.y -= 1
-        end
-    )
 end
 
 function input()
