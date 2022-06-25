@@ -22,6 +22,8 @@ function _init()
     alienRowRightEdgeX = getAlienRightEdgeRowX()
     alienRowLeftEdgeX = getAlienLeftEdgeRowX()
     debug = false
+    lasers = {}
+    laserSprite = 49
 end
 
 function _update()
@@ -42,6 +44,7 @@ function _update()
     end
     frameCount += 1
     frameCount = frameCount % 31
+    updateLasers()
     input()
 end
 
@@ -56,8 +59,8 @@ function _draw()
             )        
         end
     end
+    drawLasers()
     drawPlayer(playerX, playerY)
-
     if debug then
         line(
             alienRowRightEdgeX, 0,
@@ -111,6 +114,24 @@ function getAlienLeftEdgeRowX()
     return alienRowStart + ((furthestAlienLeft-1)*spriteWidth) 
 end
 
+function drawLasers()
+    foreach(
+        lasers,
+        function(laser) 
+            spr(laserSprite,laser.x,laser.y)
+        end
+    )
+end
+
+function updateLasers()
+    foreach(
+        lasers,
+        function(laser) 
+            laser.y -= 1
+        end
+    )
+end
+
 function input()
     if (btn(0)) then
         if playerX > screenBoundLeft then
@@ -121,5 +142,11 @@ function input()
         if playerX + playerWidth < screenBoundRight then
             playerX += 1
         end
+    end
+    if (btnp(5)) then
+        add(lasers,{
+            x = playerX + 4,
+            y = playerY
+        })
     end
 end
