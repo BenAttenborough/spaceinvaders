@@ -21,6 +21,8 @@ function _init()
     furthestAlienLeft = getFurthestLeftAlien(aliens)
     alienRowRightEdgeX = getAlienRightEdgeRowX()
     alienRowLeftEdgeX = getAlienLeftEdgeRowX()
+    score = 0
+    hiscore = 1000
     debug = false
 end
 
@@ -34,7 +36,7 @@ function _update()
         if alienRowRightEdgeX >= 120 then
             alienColStart += 1
             alienMovementX = -1
-        elseif alienRowLeftEdgeX <= 8 then
+        elseif alienRowLeftEdgeX < 8 then
             alienColStart += 1
             alienMovementX = 1
         end
@@ -48,6 +50,8 @@ end
 
 function _draw()
     cls()
+    print("score: " .. score, screenBoundLeft, 0, 7)
+    print("hi-score: " .. hiscore, 64, 0, 7)
     for i = 0,(alienRows - 1) do 
         for j = 0,(alienCols - 1) do
             drawAlien(
@@ -59,74 +63,6 @@ function _draw()
     end
     drawLasers()
     drawPlayer(playerX, playerY)
-    if debug then
-        line(
-            alienRowRightEdgeX, 0,
-            alienRowRightEdgeX, 128,
-            11
-        )
-        line(
-            alienRowLeftEdgeX, 0,
-            alienRowLeftEdgeX, 128,
-            11
-        )
-        print("furthest alien right = " .. furthestAlienRight,5,100,7)
-        print("furthest alien left = " .. furthestAlienLeft,5,108,7)
-        line(
-            screenBoundLeft, 0,
-            screenBoundLeft, 128,
-            8
-        )
-        line(
-            screenBoundRight, 0,
-            screenBoundRight, 128,
-            8
-        )
-    end
+    if debug then debugOutput() end
 end
 
-function drawAlien(type,x,y)
-    if type == 1 then
-        sprN = 32
-    elseif type == 2 then
-        sprN = 34
-    elseif type == 3 then
-        sprN = 36
-    else
-        sprN = 38
-    end
-    if toggle then sprN += 1 end
-    spr(sprN,x,y)
-end
-
-function drawPlayer(x,y)
-    spr(playerSprite,x,y)
-    spr(playerSprite+1,x+8,y)
-end
-
-function getAlienRightEdgeRowX()
-    return alienRowStart + (furthestAlienRight*spriteWidth) + (#aliens[1] - 1)*alienColBuffer
-end
-
-function getAlienLeftEdgeRowX()
-    return alienRowStart + ((furthestAlienLeft-1)*spriteWidth) 
-end
-
-function input()
-    if (btn(0)) then
-        if playerX > screenBoundLeft then
-            playerX -= 1
-        end
-    end
-    if (btn(1)) then
-        if playerX + playerWidth < screenBoundRight then
-            playerX += 1
-        end
-    end
-    if (btnp(5)) then
-        add(lasers,{
-            x = playerX + 4,
-            y = playerY
-        })
-    end
-end

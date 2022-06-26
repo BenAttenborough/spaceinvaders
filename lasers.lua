@@ -19,3 +19,6 @@ function updateLasers()
         end
     )
 end
+
+function laserCollision()
+end

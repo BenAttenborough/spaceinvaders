@@ -53,3 +53,25 @@ function getFurthestLeftAlien(aliens)
     end
     return furthestLeft
 end
+
+function drawAlien(type,x,y)
+    if type == 1 then
+        sprN = 32
+    elseif type == 2 then
+        sprN = 34
+    elseif type == 3 then
+        sprN = 36
+    else
+        sprN = 38
+    end
+    if toggle then sprN += 1 end
+    spr(sprN,x,y)
+end
+
+function getAlienRightEdgeRowX()
+    return alienRowStart + (furthestAlienRight*spriteWidth) + (#aliens[1] - 1)*alienColBuffer
+end
+
+function getAlienLeftEdgeRowX()
+    return alienRowStart + ((furthestAlienLeft-1)*spriteWidth) 
+end
