@@ -1,4 +1,5 @@
 function _init()
+    debug = true
     spriteWidth = 8
     spriteHeight = 8
     alienRowStart = 8
@@ -8,7 +9,9 @@ function _init()
     alienRowBuffer = 4
     alienColBuffer = 2
     alienMovementX = 1
+    alienMovementY = 1
     alienMovementToggle = false
+    alienYToggle = false
     playerSprite = 16
     playerX = 8
     playerY = 120
@@ -23,25 +26,13 @@ function _init()
     alienRowLeftEdgeX = getAlienLeftEdgeRowX()
     score = 0
     hiscore = 1000
-    debug = false
 end
 
 function _update()
     furthestAlienRight = getFurthestRightAlien(aliens)
     alienRowRightEdgeX = getAlienRightEdgeRowX()
     alienRowLeftEdgeX = getAlienLeftEdgeRowX()
-    if frameCount == 30 then
-        toggle = not toggle
-        sfx(0)
-        if alienRowRightEdgeX >= 120 then
-            alienColStart += 1
-            alienMovementX = -1
-        elseif alienRowLeftEdgeX < 8 then
-            alienColStart += 1
-            alienMovementX = 1
-        end
-        alienRowStart += alienMovementX
-    end
+    aliensUpdate()
     frameCount += 1
     frameCount = frameCount % 31
     updateLasers()
@@ -55,14 +46,18 @@ function _draw()
     for i = 0,(alienRows - 1) do 
         for j = 0,(alienCols - 1) do
             drawAlien(
-                aliens[i+1][j+1].type,
-                alienRowStart + (j*spriteWidth)+(j*alienColBuffer),
-                alienColStart + (i*spriteHeight)+(i*alienRowBuffer)
-            )        
+                aliens[i+1][j+1]
+            )
+            -- rect(
+            --     aliens[i+1][j+1].x,
+            --     aliens[i+1][j+1].y,
+            --     aliens[i+1][j+1].x + spriteWidth - 1,
+            --     aliens[i+1][j+1].y + spriteHeight - 1,
+            --     3
+            -- )
         end
     end
     drawLasers()
     drawPlayer(playerX, playerY)
     if debug then debugOutput() end
 end
-

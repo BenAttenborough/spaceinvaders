@@ -13,7 +13,8 @@ function input()
         sfx(1)
         add(lasers,{
             x = playerX + 4,
-            y = playerY
+            y = playerY,
+            alive = true
         })
     end
 end

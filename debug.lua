@@ -10,7 +10,8 @@ function debugOutput()
         11
     )
     print("furthest alien right = " .. furthestAlienRight,5,100,7)
-    print("furthest alien left = " .. furthestAlienLeft,5,108,7)
+    print("furthest alien left = " .. furthestAlienLeft)
+    print("alienRowRightEdgeX = " .. alienRowRightEdgeX)
     line(
         screenBoundLeft, 0,
         screenBoundLeft, 128,
