@@ -1,3 +1,9 @@
+-- Set your logfile in Globals
+function debugLog(str, overwrite)
+   overwrite = overwrite or false
+   printh(str, logfile, overwrite)
+end
+
 function debugOutput()
     line(
         alienRowRightEdgeX, 0,

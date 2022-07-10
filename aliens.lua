@@ -1,6 +1,6 @@
 function makeAliens()
     local alienCols = 11
-    local alienRows = 5
+    local alienRows = alienRows
     local row = {}
     local data = {}
     local alienType = 1
@@ -95,10 +95,10 @@ function getFurthestLeftAlien(aliens)
     furthestLeft = alienCols
     for i = 1,(#aliens) do 
         for j = 1,(#aliens[i]) do
-            if j < furthestLeft and aliens[i][j].alive then
-                if j == 1 then
-                    return j
-                end
+            if  j < furthestLeft and aliens[i][j].alive then
+                -- if j == 1 then
+                --     return j
+                -- end
                 furthestLeft = j
             end
         end

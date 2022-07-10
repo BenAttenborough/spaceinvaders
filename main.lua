@@ -1,5 +1,6 @@
 function _init()
-    debug = true
+    debug = false
+    logfile = "log.txt"
     spriteWidth = 8
     spriteHeight = 8
     alienRowStart = 8
@@ -30,6 +31,7 @@ end
 
 function _update()
     furthestAlienRight = getFurthestRightAlien(aliens)
+    furthestAlienLeft = getFurthestLeftAlien(aliens)
     alienRowRightEdgeX = getAlienRightEdgeRowX()
     alienRowLeftEdgeX = getAlienLeftEdgeRowX()
     aliensUpdate()
