@@ -63,9 +63,11 @@ function aliensUpdate()
                         foreach(
                         lasers,
                         function(laser) 
-                            if checkAlienCollision(laser,alien) then
+                            if checkAlienCollision(alien, laser) then
                                 alien.alive = false
                                 laser.alive = false
+                                sfx(2)
+                                score += 50
                             end
                         end
                     )
@@ -96,9 +98,9 @@ function getFurthestLeftAlien(aliens)
     for i = 1,(#aliens) do 
         for j = 1,(#aliens[i]) do
             if  j < furthestLeft and aliens[i][j].alive then
-                -- if j == 1 then
-                --     return j
-                -- end
+                if j == 1 then
+                    return j
+                end
                 furthestLeft = j
             end
         end
@@ -132,10 +134,10 @@ function getAlienLeftEdgeRowX()
 end
 
 function checkAlienCollision(alien,obj)
-    if not obj.alive then
+    if not alien.alive then
         return false
-    elseif obj.y >= alien.y + spriteHeight - 1 then
-        if obj.x >= alien.x and obj.x - 2 <= alien.x + spriteWidth - 1 then
+    elseif alien.y >= obj.y and alien.y - spriteHeight <= obj.y then
+        if (obj.x + 4) >= alien.x and (obj.x + 5) <= alien.x + spriteWidth  then
             return true
         end
     end
