@@ -28,6 +28,7 @@ function _init()
     alienRowLeftEdgeX = getAlienLeftEdgeRowX()
     score = 0
     hiscore = 1000
+    shieldSpr = 40
 end
 
 function _update60()
@@ -60,6 +61,7 @@ function _draw()
             -- )
         end
     end
+    drawShields()
     drawLasers()
     drawPlayer(playerX, playerY)
     if debug then debugOutput() end
