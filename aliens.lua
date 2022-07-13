@@ -25,7 +25,7 @@ function makeAliens()
 end
 
 function aliensUpdate()
-    if frameCount == 30 then
+    if frameCount == flr(frameToUpdate) then
         toggle = not toggle
         sfx(0)
         if alienRowRightEdgeX == 120 then
@@ -68,6 +68,7 @@ function aliensUpdate()
                                 laser.alive = false
                                 sfx(2)
                                 score += 50
+                                frameToUpdate -= 0.55
                             end
                         end
                     )

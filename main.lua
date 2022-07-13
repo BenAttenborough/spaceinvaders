@@ -3,6 +3,7 @@ function _init()
     logfile = "log.txt"
     spriteWidth = 8
     spriteHeight = 8
+    frameToUpdate = 30
     alienRowStart = 8
     alienColStart = 8
     alienCols = 11
@@ -29,14 +30,14 @@ function _init()
     hiscore = 1000
 end
 
-function _update()
+function _update60()
     furthestAlienRight = getFurthestRightAlien(aliens)
     furthestAlienLeft = getFurthestLeftAlien(aliens)
     alienRowRightEdgeX = getAlienRightEdgeRowX()
     alienRowLeftEdgeX = getAlienLeftEdgeRowX()
     aliensUpdate()
     frameCount += 1
-    frameCount = frameCount % 31
+    frameCount = frameCount % (flr(frameToUpdate) + 1)
     updateLasers()
     input()
 end
