@@ -6,7 +6,7 @@ function _init()
     frameToUpdate = 30
     alienRowStart = 8
     alienColStart = 8
-    alienCols = 11
+    alienCols = 10
     alienRows = 5
     alienRowBuffer = 4
     alienColBuffer = 2
@@ -14,6 +14,8 @@ function _init()
     alienMovementY = 1
     alienMovementToggle = false
     alienYToggle = false
+    alienAttackFrameCount = 1
+    alienAttackFrame = 240
     playerSprite = 16
     playerX = 8
     playerY = 120
@@ -39,7 +41,10 @@ function _update60()
     aliensUpdate()
     frameCount += 1
     frameCount = frameCount % (flr(frameToUpdate) + 1)
+    alienAttackFrameCount += 1
+    alienAttackFrameCount = alienAttackFrameCount % (flr(alienAttackFrame) + 1)
     updateLasers()
+    updateALasers()
     input()
 end
 
@@ -63,6 +68,7 @@ function _draw()
     end
     drawShields()
     drawLasers()
+    drawALasers()
     drawPlayer(playerX, playerY)
     if debug then debugOutput() end
 end
